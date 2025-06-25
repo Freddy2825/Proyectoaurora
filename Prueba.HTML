@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Accede al Proyecto Aurora</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .logo {
+      max-width: 120px;
+      margin-bottom: 20px;
+    }
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      text-align: left;
+      margin-top: 15px;
+      font-weight: 600;
+    }
+    input[type="email"],
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      font-size: 15px;
+    }
+    .clave {
+      margin-top: 10px;
+      background-color: #eef;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: bold;
+      color: #333;
+    }
+    .info {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+    }
+    img.content-img {
+      max-width: 100%;
+      margin-top: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 20px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .btn-informe {
+      background-color: #007BFF;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    .btn-informe:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="https://i.ibb.co/zWP55xJ1/Imagen3.png" alt="Logo" class="logo" />
+    <h2>Accede al Proyecto Aurora</h2>
+
+    <label for="email">Correo:</label>
+    <input type="email" id="email" placeholder="nombre@grupoleti.com">
+
+    <button onclick="generarClave()">Generar Clave</button>
+
+    <div id="clave-container" class="clave" style="display:none;">
+      <p id="clave-generada"></p>
+      <p style="font-size: 13px;">Esta es su clave personal, <strong>no la comparta con nadie</strong>. Su acceso queda registrado con su información.</p>
+    </div>
+
+    <label for="codigo">Código mostrado:</label>
+    <input type="text" id="codigo" placeholder="Ingrese su clave generada">
+
+    <button onclick="verificarAcceso()">Ingresar</button>
+
+    <div id="resultado" class="info"></div>
+  </div>
+
+  <script>
+    const accesos = {
+      // Acceso General
+      "desaix.villarreal@grupoleti.com": { grupo: "general", nombre: "Desaix Villarreal" },
+      "mtrujillo@grupoleti.com": { grupo: "general", nombre: "Marcos Trujillo" },
+      "tprezioso@grupoleti.com": { grupo: "general", nombre: "Tiziana Prezioso" },
+      "martha.hernandez@grupoleti.com": { grupo: "general", nombre: "Martha Hernandez" },
+      "yonathan.meza@grupoleti.com": { grupo: "general", nombre: "Yonathan Meza" },
+      "jessica.vasconcelos@grupoleti.com": { grupo: "general", nombre: "Jessica Vasconcelos" },
+      "tcoll@grupoleti.com": { grupo: "general", nombre: "Trinidad Coll" },
+
+      // Fabricación
+      "ainoscar.bustamante@grupoleti.com": { grupo: "fabricacion", nombre: "Ainoscar Bustamante" },
+      "andres.tonelli@grupoleti.com": { grupo: "fabricacion", nombre: "Andres Tonelli" },
+      "carmen.sojo@grupoleti.com": { grupo: "fabricacion", nombre: "Carmen Sojo" },
+      "cesar.dasilva@grupoleti.com": { grupo: "fabricacion", nombre: "Cesar Da Silva" },
+      "cherry.angulo@grupoleti.com": { grupo: "fabricacion", nombre: "Cherry Angulo" },
+      "emilio.zarraga@grupoleti.com": { grupo: "fabricacion", nombre: "Emilio Zarraga" },
+      "gonzalo.ramirez@grupoleti.com": { grupo: "fabricacion", nombre: "Gonzalo Ramirez" },
+      "joel.beroes@grupoleti.com": { grupo: "fabricacion", nombre: "Joel Beroes" },
+      "mairim.echezuria@grupoleti.com": { grupo: "fabricacion", nombre: "Mairim Echezuria" },
+      "maycoll.salazar@grupoleti.com": { grupo: "fabricacion", nombre: "Maycoll Salazar" },
+      "pablo.vasquez@grupoleti.com": { grupo: "fabricacion", nombre: "Pablo Vasquez" },
+      "pedro.jimenez@grupoleti.com": { grupo: "fabricacion", nombre: "Pedro Jimenez" },
+      "quibi.vilera@grupoleti.com": { grupo: "fabricacion", nombre: "Quebi Vilera" },
+      "stefany.acosta@grupoleti.com": { grupo: "fabricacion", nombre: "Stefany Acosta" },
+      "wuilerma.moreno@grupoleti.com": { grupo: "fabricacion", nombre: "Wuilerma Moreno" },
+      "yoselin.jara@grupoleti.com": { grupo: "fabricacion", nombre: "Yoselin Jara" },
+
+      // Empaques
+      "adrian.rosales@grupoleti.com": { grupo: "empaques", nombre: "Adrian Rosales" },
+      "alejandro.cerpa@grupoleti.com": { grupo: "empaques", nombre: "Alejandro Cerpa" },
+      "andreina.velasquez@grupoleti.com": { grupo: "empaques", nombre: "Andreina Velasquez" },
+      "brodriguez@grupoleti.com": { grupo: "empaques", nombre: "Breddy Rodriguez" },
+      "darvelo@grupoleti.com": { grupo: "empaques", nombre: "Danis Arvelo" },
+      "edgar.gonzalez@grupoleti.com": { grupo: "empaques", nombre: "Edgar Gonzalez" },
+      "emily.moya@grupoleti.com": { grupo: "empaques", nombre: "Emily Moya" },
+      "jessika.palacios@grupoleti.com": { grupo: "empaques", nombre: "Jessika Palacios" },
+      "marco.rengifo@grupoleti.com": { grupo: "empaques", nombre: "Marco Rengifo" },
+      "maria.sanchez@grupoleti.com": { grupo: "empaques", nombre: "Maria Sanchez" },
+      "mariam.perez@grupoleti.com": { grupo: "empaques", nombre: "Maria Perez" },
+      "marielena.marquez@grupoleti.com": { grupo: "empaques", nombre: "Marielena Marquez" },
+      "nargelin.lozano@grupoleti.com": { grupo: "empaques", nombre: "Nargelin Lozano" },
+      "rafael.castro@grupoleti.com": { grupo: "empaques", nombre: "Rafael Castro" },
+      "raul.requena@grupoleti.com": { grupo: "empaques", nombre: "Raul Requena" },
+      "roselyn.valero@grupoleti.com": { grupo: "empaques", nombre: "Roselyn Valero" },
+      "wilson.hernandez@grupoleti.com": { grupo: "empaques", nombre: "Wilson Hernandez" },
+      "yaimira.hernandez@grupoleti.com": { grupo: "empaques", nombre: "Yaimira Hernandez" },
+      "yperez@grupoleti.com": { grupo: "empaques", nombre: "Yusmila Perez" }
+    };
+
+    let claveGenerada = "";
+
+    function crearClave(email) {
+      let hash = 0;
+      for (let i = 0; i < email.length; i++) {
+        hash = email.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      const clave = Math.abs(hash).toString().slice(0,6);
+      return clave;
+    }
+
+    function generarClave() {
+      const email = document.getElementById('email').value.trim().toLowerCase();
+      if (!email) {
+        alert('Por favor, introduzca su correo.');
+        return;
+      }
+      if (!(email in accesos)) {
+        alert('Correo no autorizado.');
+        return;
+      }
+
+      claveGenerada = crearClave(email);
+      document.getElementById('clave-generada').textContent = `Su clave es: ${claveGenerada}`;
+      document.getElementById('clave-container').style.display = 'block';
+    }
+
+    function verificarAcceso() {
+      const email = document.getElementById('email').value.trim().toLowerCase();
+      const codigo = document.getElementById('codigo').value.trim();
+      const resultado = document.getElementById('resultado');
+
+      resultado.innerHTML = "";
+
+      if (!email || !codigo) {
+        resultado.innerHTML = "⚠️ Complete todos los campos.";
+        return;
+      }
+
+      if (!(email in accesos)) {
+        resultado.innerHTML = "❌ Correo no autorizado.";
+        return;
+      }
+
+      const claveCorrecta = crearClave(email);
+
+      if (codigo !== claveCorrecta) {
+        resultado.innerHTML = "❌ Clave incorrecta.";
+        return;
+      }
+
+      const { grupo, nombre } = accesos[email];
+
+      const imgA = `<a href="https://ibb.co/t1gng1N"><img class="content-img" src="https://i.ibb.co/GryGyr1/Imagen1.png" alt="Imagen A"></a>`;
+      const imgB = `<a href="https://ibb.co/Z4wVfWC"><img class="content-img" src="https://i.ibb.co/j0xT8gF/Imagen2.png" alt="Imagen B"></a>`;
+      const informe = `<a class="btn-informe" href="https://drive.google.com/file/d/1MgVvphXFHYXD9-NpB-9r9ASxZiCa8PSA/view?usp=sharing" target="_blank">📄 Ver Informe del Proyecto Aurora</a>`;
+
+      let mensajeBienvenida = `<strong>✅ Bienvenido ${nombre} al Proyecto Aurora. </strong><br>`;
+
+      if (grupo === "general") {
+        mensajeBienvenida += "Acceso concedido General.<br>";
+        resultado.innerHTML = informe + "<br><br>" + mensajeBienvenida + imgA + imgB;
+      } else if (grupo === "fabricacion") {
+        mensajeBienvenida += "Acceso concedido para el Área de Fabricación.<br>";
+        resultado.innerHTML = informe + "<br><br>" + mensajeBienvenida + imgA;
+      } else if (grupo === "empaques") {
+        mensajeBienvenida += "Acceso concedido para el Área de Empaques.<br>";
+        resultado.innerHTML = informe + "<br><br>" + mensajeBienvenida + imgB;
+      }
+    }
+  </script>
+</body>
+</html>
